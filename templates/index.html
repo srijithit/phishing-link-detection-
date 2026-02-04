@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Safety Checker | DEV </> Srijith</title>
+    <style>
+        body {
+            background: black;
+            color: #00ff00;
+            font-family: Consolas, monospace;
+            text-align: center;
+        }
+        input {
+            width: 60%;
+            padding: 10px;
+            background: #001100;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 25px;
+            background: #003300;
+            color: #00ff00;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        pre {
+            background: black;
+            border: 1px solid #00ff00;
+            padding: 15px;
+            width: 80%;
+            height: 300px;
+            overflow-y: auto;
+            margin: 20px auto;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<h1>URL SAFETY CHECKER</h1>
+<p>Developed by Srijith | CYBER SOFT</p>
+
+<input id="url" placeholder="Enter target URL">
+<br>
+<button onclick="scan()">▶ START SCAN</button>
+
+<pre id="output">[+] Waiting for input</pre>
+
+<script>
+function scan() {
+    const url = document.getElementById("url").value;
+    const output = document.getElementById("output");
+    output.textContent = "[*] Scanning...\n";
+
+    fetch("/scan", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({url: url})
+    })
+    .then(res => res.json())
+    .then(data => {
+        output.textContent = data.logs.join("\n");
+    })
+    .catch(err => {
+        output.textContent = "[-] Scan failed";
+    });
+}
+</script>
+
+</body>
+</html>
