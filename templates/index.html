@@ -1,69 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Safety Checker | DEV </> Srijith</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background: black;
+            margin: 0;
+            background: #000;
             color: #00ff00;
             font-family: Consolas, monospace;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 15px;
             text-align: center;
         }
+
+        h1 {
+            font-size: clamp(1.4rem, 5vw, 2.2rem);
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
         input {
-            width: 60%;
-            padding: 10px;
+            width: 100%;
+            padding: 12px;
             background: #001100;
             color: #00ff00;
             border: 1px solid #00ff00;
+            font-size: 1rem;
+            outline: none;
+            border-radius: 4px;
         }
+
         button {
-            margin-top: 10px;
-            padding: 10px 25px;
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px;
             background: #003300;
             color: #00ff00;
             border: none;
             font-weight: bold;
+            font-size: 1rem;
             cursor: pointer;
+            border-radius: 4px;
         }
+
+        button:active {
+            background: #005500;
+        }
+
         pre {
-            background: black;
+            margin-top: 15px;
+            background: #000;
             border: 1px solid #00ff00;
-            padding: 15px;
-            width: 80%;
-            height: 300px;
+            padding: 12px;
+            height: 260px;
             overflow-y: auto;
-            margin: 20px auto;
             text-align: left;
+            font-size: 0.85rem;
+            border-radius: 4px;
+        }
+
+        /* Desktop Enhancements */
+        @media (min-width: 768px) {
+            button {
+                width: auto;
+                padding: 12px 30px;
+            }
+
+            pre {
+                height: 320px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<h1>URL SAFETY CHECKER</h1>
-<p>Developed by Srijith | CYBER SOFT</p>
+<div class="container">
+    <h1>URL SAFETY CHECKER</h1>
+    <p>Developed by Srijith | CYBER SOFT</p>
 
-<input id="url" placeholder="Enter target URL">
-<br>
-<button onclick="scan()">▶ START SCAN</button>
+    <input id="url" placeholder="Enter target URL">
 
-<pre id="output">[+] Waiting for input</pre>
+    <button onclick="scan()">▶ START SCAN</button>
+
+    <pre id="output">[+] Waiting for input</pre>
+</div>
 
 <script>
 function scan() {
     const url = document.getElementById("url").value;
     const output = document.getElementById("output");
+
+    if (!url) {
+        output.textContent = "[-] TARGET URL REQUIRED";
+        return;
+    }
+
     output.textContent = "[*] Scanning...\n";
 
     fetch("/scan", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({url: url})
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url })
     })
     .then(res => res.json())
     .then(data => {
         output.textContent = data.logs.join("\n");
     })
-    .catch(err => {
+    .catch(() => {
         output.textContent = "[-] Scan failed";
     });
 }
