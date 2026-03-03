@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask
 import socket
 import time
 from urllib.parse import urlparse
@@ -12,8 +12,8 @@ SUSPICIOUS_KEYWORDS = [
 ]
 
 @app.route("/")
-def index():
-    return render_template("index.html")
+def home():
+    return "Flask running on Vercel 🚀"
 
 @app.route("/scan", methods=["POST"])
 def scan():
@@ -24,13 +24,13 @@ def scan():
 
     logs = []
     logs.append("[*] Initializing modules...")
-    time.sleep(0.5)
+    time.sleep(0.8)
 
     logs.append("[*] Analyzing target URL...")
-    time.sleep(0.5)
+    time.sleep(0.8)
 
     logs.append("[*] Resolving DNS records...")
-    time.sleep(0.5)
+    time.sleep(0.8)
 
     try:
         domain = urlparse(url).netloc
@@ -52,7 +52,5 @@ def scan():
     return jsonify({"logs": logs})
 
 
-if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 8000))
-    app.run(host="0.0.0.0", port=port)
+
+
