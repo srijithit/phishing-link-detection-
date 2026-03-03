@@ -1,6 +1,14 @@
-services:
-  - type: web
-    name: url-safety-checker
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+{
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.py"
+    }
+  ]
+}
